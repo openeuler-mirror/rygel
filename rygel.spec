@@ -1,6 +1,6 @@
 Name:          rygel
 Version:       0.40.1
-Release:       1
+Release:       2
 Summary:       A media solution can easily share audio, video and pictures, and media player controler
 
 License:       LGPLv2+
@@ -10,7 +10,7 @@ Source0:       https://download.gnome.org/sources/%{name}/0.40/%{name}-%{version
 BuildRequires: dbus-glib-devel desktop-file-utils docbook-style-xsl gettext gobject-introspection-devel
 BuildRequires: gst-editing-services-devel gstreamer1-devel gstreamer1-plugins-base-devel gtk-doc gtk3-devel
 BuildRequires: gupnp-devel gupnp-av-devel gupnp-dlna-devel libgee-devel libmediaart-devel libsoup-devel
-BuildRequires: libunistring-devel libuuid-devel meson sqlite-devel systemd-devel tracker-devel vala
+BuildRequires: libunistring-devel libuuid-devel meson sqlite-devel systemd-devel tracker3-devel vala
 BuildRequires: libmediaart-help libxslt
 
 Provides:   %{name}-tracker = %{version}-%{release}
@@ -31,10 +31,15 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 %description devel
 Files for development with %{name}.
 
-%package_help
+%package help
+Summary: Help package for %{name}
+
+%description help
+Files for help with %{name}.
 
 %prep
 %setup -q
+sed -i -e "s/'tracker', //" meson_options.txt
 
 %build
 %meson \
@@ -84,10 +89,15 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/rygel-preferences.de
 %{_datadir}/vala/vapi/*
 
 %files help
+%dir %{_datadir}/gtk-doc
+%dir %{_datadir}/gtk-doc/html
 %doc %{_datadir}/gtk-doc/html/librygel*
 %{_mandir}/man1/rygel.1*
 %{_mandir}/man5/rygel.conf.5*
 
 %changelog
+* Fri Sep 24 2021 Wenlong Ding <wenlong.ding@turbolinux.com.cn> - 0.40.1-2
+- Build tracker 3.0 plugin, disable tracker 2.0
+
 * Wed Jun 23 2021 weijin deng <weijin.deng@turbolinux.com.cn> - 0.40.1-1
 - Package init with version 0.40.1
