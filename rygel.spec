@@ -1,8 +1,9 @@
-Name:          rygel
-Version:       0.40.1
-Release:       2
-Summary:       A media solution can easily share audio, video and pictures, and media player controler
+%global apiver  2.6
 
+Name:          rygel
+Version:       0.40.3
+Release:       1
+Summary:       A media solution can easily share audio, video and pictures, and media player controler
 License:       LGPLv2+
 URL:           https://wiki.gnome.org/Projects/Rygel
 Source0:       https://download.gnome.org/sources/%{name}/0.40/%{name}-%{version}.tar.xz
@@ -38,8 +39,7 @@ Summary: Help package for %{name}
 Files for help with %{name}.
 
 %prep
-%setup -q
-sed -i -e "s/'tracker', //" meson_options.txt
+%autosetup -p1
 
 %build
 %meson \
@@ -62,13 +62,13 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/rygel-preferences.de
 %config(noreplace) %{_sysconfdir}/rygel.conf
 %{_bindir}/rygel*
 %{_libdir}/girepository-1.0/*
-%{_libdir}/librygel-core-2.6.so.*
-%{_libdir}/librygel-db-2.6.so.*
-%{_libdir}/librygel-renderer-2.6.so.*
-%{_libdir}/librygel-renderer-gst-2.6.so.*
-%{_libdir}/librygel-ruih-2.0.so.*
-%{_libdir}/librygel-server-2.6.so.*
-%{_libdir}/rygel-2.6/*
+%{_libdir}/librygel-core-%{apiver}.so.2*
+%{_libdir}/librygel-db-%{apiver}.so.2*
+%{_libdir}/librygel-renderer-%{apiver}.so.2*
+%{_libdir}/librygel-renderer-gst-%{apiver}.so.2*
+%{_libdir}/librygel-ruih-2.0.so.1*
+%{_libdir}/librygel-server-%{apiver}.so.2*
+%{_libdir}/rygel-%{apiver}/*
 %{_libexecdir}/rygel/
 %{_datadir}/rygel/
 %{_datadir}/applications/rygel*
@@ -77,13 +77,10 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/rygel-preferences.de
 %{_userunitdir}/rygel.service
 
 %files devel
-%{_includedir}/rygel-2.6
-%{_libdir}/librygel-core-2.6.so
-%{_libdir}/librygel-db-2.6.so
-%{_libdir}/librygel-renderer-2.6.so
-%{_libdir}/librygel-renderer-gst-2.6.so
-%{_libdir}/librygel-ruih-2.0.so
-%{_libdir}/librygel-server-2.6.so
+%{_includedir}/rygel-%{apiver}
+%{_libdir}/librygel-*.so
+%{_libdir}/rygel-%{apiver}/plugins/librygel-tracker3.so
+%{_libdir}/rygel-%{apiver}/plugins/tracker3.plugin
 %{_libdir}/pkgconfig/rygel*.pc
 %{_datadir}/gir-1.0/*
 %{_datadir}/vala/vapi/*
@@ -96,6 +93,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/rygel-preferences.de
 %{_mandir}/man5/rygel.conf.5*
 
 %changelog
+* Mon Mar 28 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 0.40.3-1
+- Update to 0.40.3
+
 * Fri Sep 24 2021 Wenlong Ding <wenlong.ding@turbolinux.com.cn> - 0.40.1-2
 - Build tracker 3.0 plugin, disable tracker 2.0
 
