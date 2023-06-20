@@ -2,7 +2,7 @@
 
 Name:          rygel
 Version:       0.40.3
-Release:       1
+Release:       2
 Summary:       A media solution can easily share audio, video and pictures, and media player controler
 License:       LGPLv2+
 URL:           https://wiki.gnome.org/Projects/Rygel
@@ -42,6 +42,10 @@ Files for help with %{name}.
 %autosetup -p1
 
 %build
+%if "%toolchain" == "clang"
+	export CFLAGS="$CFLAGS -Wno-error=int-conversion"
+	export CXXFLAGS="$CXXFLAGS -Wno-error=int-conversion"
+%endif
 %meson \
   -Dapi-docs=true \
   -Dexamples=false
@@ -93,6 +97,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/rygel-preferences.de
 %{_mandir}/man5/rygel.conf.5*
 
 %changelog
+* Tue Jun 20 2023 yoo <sunyuechi@iscas.ac.cn> - 0.40.3-2
+- fix clang build error
+
 * Mon Mar 28 2022 lin zhang <lin.zhang@turbolinux.com.cn> - 0.40.3-1
 - Update to 0.40.3
 
